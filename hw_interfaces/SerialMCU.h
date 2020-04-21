@@ -2,7 +2,7 @@
 #define SERIALMCU_H
 
 
-#include <stdint.h> 
+#include <stdint.h>
 #include "../OledScreen.h"
 #include "../OSC/OSCMessage.h"
 #include "../OSC/SimpleWriter.h"
@@ -34,7 +34,7 @@ class SerialMCU
         uint32_t keyStatesLast;
         uint32_t keyFlag;
 
-    private:        
+    private:
         // handlers for the inputs
         void knobsInput(OSCMessage &msg);
         void footswitchInput(OSCMessage &msg);

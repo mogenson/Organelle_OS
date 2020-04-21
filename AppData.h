@@ -78,7 +78,7 @@ public:
     unsigned micLineSelection;
     unsigned ledColor;              // current led color
     unsigned ledFlashCounter;       // for flashing the led
-    
+
     char currentPatch[256];
     char currentPatchPath[256];
 

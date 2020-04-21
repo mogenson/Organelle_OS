@@ -5,7 +5,7 @@
 
 /*
 
-Timer 
+Timer
 
 (c) 2016 Owen Osborn, Critter & Guitari
 
@@ -14,7 +14,7 @@ Timer
 class Timer
 {
  public:
-  
+
   Timer ();
 
   // destructor
@@ -22,8 +22,8 @@ class Timer
 
    void reset(void);
 
-   float getElapsed(void); 
-    
+   float getElapsed(void);
+
    struct timeval start, stop;
 
 };

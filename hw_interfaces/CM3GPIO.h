@@ -4,8 +4,8 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 #include <wiringShift.h>
-#include <stdio.h>  
-#include <stdlib.h>  
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
@@ -39,7 +39,7 @@ class CM3GPIO
         uint32_t keyStates;
         uint32_t keyStatesLast;
         uint32_t keyFlag;
-        
+
         // organelle m specific stuff
         uint32_t pwrStatus;
         uint32_t micSelSwitch;
@@ -47,14 +47,14 @@ class CM3GPIO
         uint32_t batteryBars;
         bool lowBatteryShutdown;
 
-    private:        
+    private:
         uint32_t shiftRegRead();
         void getEncoder();
         void getKeys();
         uint32_t adcRead(uint8_t adcnum);
         void displayPinValues();
     void checkFootSwitch ();
-        
+
         uint32_t pinValues;
         uint32_t pinValuesLast;
 };

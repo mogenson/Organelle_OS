@@ -7,12 +7,12 @@
  licensing agreement, is hereby granted, provided that the above copyright
  notice, this paragraph and the following two paragraphs appear in all copies,
  modifications, and distributions.
- 
+
  IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING
  OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF REGENTS HAS
  BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  PURPOSE. THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
@@ -26,7 +26,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
     /**
      * Switch this off to disable matching against a pattern with 2 stars
      */
@@ -36,12 +36,12 @@ extern "C" {
      * be done recursively.
      */
     //#define OSC_MATCH_ENABLE_NSTARS       1
-    
+
     /**
      * Return code for osc_match() that indicates that the entire address was successfully matched
      */
 #define OSC_MATCH_ADDRESS_COMPLETE  1
-    
+
     /**
      * Return code for osc_match() that indicates that the entire pattern was successfully matched
      */
@@ -55,7 +55,7 @@ extern "C" {
      int callback;              // ROM
      } osc_callback;
      */
-    
+
     /**
      * Match a pattern against an address.  In the case of a partial match, pattern_offset
      * and address_offset will contain the number of bytes into their respective strings
@@ -69,7 +69,7 @@ extern "C" {
      * OSC_MATCH_PATTERN_COMPLETE.
      */
     int osc_match(const char *pattern, const char *address, int *pattern_offset, int *address_offset);
-    
+
 #ifdef __cplusplus
 }
 #endif

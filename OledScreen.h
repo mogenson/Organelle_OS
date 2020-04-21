@@ -2,7 +2,7 @@
 #define OLEDSCREEN_H
 
 
-#include <stdint.h> 
+#include <stdint.h>
 #include <string>
 
 
@@ -36,7 +36,7 @@ class OledScreen
         void println(const char * line, int x, int y, int h, int color);
         void println_8(const char * line, int len, int x, int y);
         void saveSVG(const char * filename);
-        
+
         void drawInfoBar(int inR, int inL, int outR, int outL, int peaks);
         void drawInfoBar(int inR, int inL, int outR, int outL, int peaks, int pwrStatus, int batteryLevel, int wifiStatus);
         void drawNotification(const char * line );

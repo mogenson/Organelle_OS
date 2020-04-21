@@ -60,7 +60,7 @@ OSCData::OSCData(float f){
     error = OSC_OK;
     type = 'f';
     bytes = 4;
-    data.f = f; 
+    data.f = f;
 }
 
 OSCData::OSCData(osctime_t t){
@@ -85,7 +85,7 @@ OSCData::OSCData(double d){
         data.d = d;
     } else {
         type = 'f';
-        data.f = d; 
+        data.f = d;
     }
 }
 
@@ -101,7 +101,7 @@ OSCData::OSCData(uint8_t * b, int len){
     //own the data
     if(bytes>0)
     {
-            
+
         uint8_t * mem = (uint8_t * ) malloc(bytes);
         if (mem == NULL){
             error = ALLOCFAILED;
@@ -162,7 +162,7 @@ OSCData::OSCData(char t){
 
 /*=============================================================================
     GETTERS
- 
+
     perform a safety check to make sure the data type matches the request
     otherwise returns NULL
 =============================================================================*/

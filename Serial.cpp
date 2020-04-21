@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>     /* Symbolic Constants */
-#include <sys/types.h>  /* Primitive System Data Types */ 
+#include <sys/types.h>  /* Primitive System Data Types */
 #include <errno.h>      /* Errors */
 #include <sys/wait.h>   /* Wait for Process Termination */
 #include <dirent.h>
@@ -41,18 +41,18 @@ static int set_interface_attribs (int fd, int speed)
     tty.c_cflag &= ~(PARENB | PARODD);      // shut off parity
     tty.c_cflag &= ~CSTOPB;
     tty.c_cflag &= ~CRTSCTS;
-    
+
     // input flags
     //tty.c_iflag &= ~IGNBRK;         // ignore break signal
     tty.c_iflag = 0;         // disable everything
-    
-    
+
+
     // local flags
     tty.c_lflag = 0;                // no signaling chars, no echo, no canonical processing
-    
+
     // output flags
     tty.c_oflag = 0;                // no remapping, no delays
-   
+
     // blocking
     tty.c_cc[VMIN]  = 0;            // read doesn't block  (block until 0 characters received)
     tty.c_cc[VTIME] = 5;            // 0.5 seconds read timeout   --- this might cuase block up to .5 sec?
@@ -69,7 +69,7 @@ static int set_interface_attribs (int fd, int speed)
 
 Serial::Serial()
 {
-    // Open serial port   
+    // Open serial port
     printf ("opening serial .....\n");
     //char *portname = "/dev/ttymxc0";
     //char *portname = "/dev/tty.usbserial-A30013Jp";
@@ -83,18 +83,18 @@ Serial::Serial()
     }
         /* set no wait on any operation */
     fcntl(serial_fd, F_SETFL, FNDELAY);
-    
-    printf("opened serial, setting up... \n");    
+
+    printf("opened serial, setting up... \n");
     set_interface_attribs (serial_fd, B500000);  // set speed to 115,200 bps, 8n1 (no parity)
     //set_interface_attribs (serial_fd, B115200);  // set speed to 115,200 bps, 8n1 (no parity)
     // Flush the port's buffers (in and out) before we start using it
     tcflush(serial_fd, TCIOFLUSH);
-    printf("done opening serial \n");    
+    printf("done opening serial \n");
 
 }
 
   // destructor
-Serial::~Serial() 
+Serial::~Serial()
 {
 
 }

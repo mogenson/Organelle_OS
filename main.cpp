@@ -39,7 +39,7 @@ enum PedalSwitchModes {
 static PedalSwitchModes pedalSwitchMode_ = PSM_PATCH;
 int footswitchPos = 1; //normally closed
 
-// buffer for sending OSC messages 
+// buffer for sending OSC messages
 SimpleWriter oscBuf;
 
 // hardware interface controls
@@ -273,9 +273,9 @@ int main(int argc, char* argv[]) {
         if (controls.footswitchFlag) footswitchInput();
 
         // clear the flags for next time
-        controls.clearFlags();     
+        controls.clearFlags();
 
-       // update oled screen, limit to about 20 fps for organelle 1  
+       // update oled screen, limit to about 20 fps for organelle 1
        // on RPI/CM3 hardware we can go a little higher
 #ifdef OLED_30FPS
         if (screenFpsTimer.getElapsed() > 30.f) {
@@ -354,7 +354,7 @@ int main(int argc, char* argv[]) {
 #endif
 
 #ifdef PWR_SWITCH
-            // dont do shutdown shortcut if there is a power switch 
+            // dont do shutdown shortcut if there is a power switch
 #else
             // check for shutdown shortcut
             if (encoderDownTime != -1) {
@@ -387,7 +387,7 @@ int main(int argc, char* argv[]) {
         if (knobPollTimer.getElapsed() > 40.f) {
             knobPollTimer.reset();
             controls.pollKnobs();
-          
+
             // if there is a patch running while on menu screen, switch back to patch screen after the timeout
             // but don't timeout to patch screen, whilst holding down encoder
             if (encoderDownTime == -1 && app.currentScreen == AppData::MENU) {
@@ -525,7 +525,7 @@ void gWaveform(OSCMessage &msg) {
 }
 
 void gFrame(OSCMessage &msg) {
-    uint8_t tmp[1028]; 
+    uint8_t tmp[1028];
     int len = 0;
     int i;
     app.oled(gScreen(msg.getInt(0))).newScreen = 0;
@@ -737,7 +737,7 @@ void patchConfig(void) {
     printf("send patch config\n");
 
     std::string postPatch = getMainSystemFile(paths,"patch_loaded.sh");
-    if(postPatch.length()>0) 
+    if(postPatch.length()>0)
     {
         printf("using config %s\n", postPatch.c_str());
         system(postPatch.c_str());
@@ -752,11 +752,11 @@ void pedalConfig(OSCMessage &msg) {
     paths.push_back(app.getFirmwareDir()+"/scripts");
 
     std::string pedalConfig = getMainSystemFile(paths,"pedal_cfg.sh");
-    if(pedalConfig.length()>0) 
+    if(pedalConfig.length()>0)
     {
         printf("using pedal config %s\n", pedalConfig.c_str());
         system(pedalConfig.c_str());
-    } 
+    }
 }
 
 
@@ -797,7 +797,7 @@ void patchLoaded(bool b) {
         msgOut.add(knobs_[i]);
     }
     msgOut.send(oscBuf);
-    udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);        
+    udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);
 }
 
 void patchLoaded(OSCMessage &msg) {
@@ -914,7 +914,7 @@ void knobsInput() {
         int v = controls.adcs[i];
 
         if(i==EXPR_KNOB && exprScaling) {
-            v = ( pedalExprMin_ <= pedalExprMax_ 
+            v = ( pedalExprMin_ <= pedalExprMax_
                 ?  ((int32_t) ( v - pedalExprMin_ ) * 1023)  / (pedalExprMax_ - pedalExprMin_)
                 :  ((int32_t) ( pedalExprMin_ - v ) * 1023)  / (pedalExprMin_ - pedalExprMax_)
                 );
@@ -941,7 +941,7 @@ void knobsInput() {
             msgOut.add(knobs_[i]);
         }
         msgOut.send(oscBuf);
-        udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);        
+        udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);
     }
 }
 
@@ -952,7 +952,7 @@ void keysInput(void) {
             msgOut.add(i);
             msgOut.add(((controls.keyStates >> i) & 1) * 100);
             msgOut.send(oscBuf);
-            udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);        
+            udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);
         }
     }
     controls.keyStatesLast = controls.keyStates;
@@ -970,16 +970,16 @@ void footswitchInput(void) {
                 menu.nextProgram();
             }
 
-            footswitchPos = pos; 
+            footswitchPos = pos;
             break;
         }
-        case PSM_PATCH: 
+        case PSM_PATCH:
         default :  {
             OSCMessage msgOut("/fs");
             msgOut.add(controls.footswitch);
             msgOut.send(oscBuf);
-            udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);      
-            break;  
+            udpSock.writeBuffer(oscBuf.buffer, oscBuf.length);
+            break;
         }
     }  //switch
 }

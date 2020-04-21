@@ -22,7 +22,7 @@ class Serial
   ~Serial();
 
   int serial_fd;
-  
+
   // send stuff
   int writeBuffer(void *buffer, long len);
 

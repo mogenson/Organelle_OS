@@ -47,7 +47,7 @@ void SerialMCU::poll(){
     }
 }
 
-void SerialMCU::pollKnobs(){    
+void SerialMCU::pollKnobs(){
     OSCMessage msg("/getknobs");
     msg.add(1);
     msg.send(oscBuf);
@@ -76,12 +76,12 @@ void SerialMCU::updateScreenPage(uint8_t page, OledScreen &screen) {
     // copy 128 byte page from the screen buffer
     for (j = 0; j < 128; j++) {
 
-        // hack to avoid too many SLIP END characters (192) in packet 
+        // hack to avoid too many SLIP END characters (192) in packet
         // which causes packet size to increase and causes problems down the line
         tmp = screen.pix_buf[j + (i * 128)];
         if (tmp == 192){
             esc++;
-            if (esc > 64) tmp = 128; // replace 192 with 128 'next best' 
+            if (esc > 64) tmp = 128; // replace 192 with 128 'next best'
         }
         oledPage[j] = tmp;
     }
@@ -135,7 +135,7 @@ void SerialMCU::encoderButtonInput(OSCMessage &msg){
         //printf("enc but %d \n", msg.getInt(0));
         encBut = msg.getInt(0);
         encButFlag = 1;
-        
+
     }
 }
 
@@ -149,7 +149,7 @@ void SerialMCU::knobsInput(OSCMessage &msg){
 
 void SerialMCU::keysInput(OSCMessage &msg){
     if (msg.isInt(0) && msg.isInt(1)) {
-        //printf("%d %d \n", msg.getInt(0), msg.getInt(1));   
+        //printf("%d %d \n", msg.getInt(0), msg.getInt(1));
         if (msg.getInt(1)) keyStates |= (1 << msg.getInt(0));
         else keyStates &= ~(1 << msg.getInt(0));
         keyFlag = 1;

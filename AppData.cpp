@@ -89,7 +89,7 @@ void AppData::setUserDir(const char* path) {
         user_path=path;
     }
     system_path = getDefaultSystemDir(user_path);
-    
+
     // stash the user dir in a tmp file for other parts of the system to use (like web apps)
     std::string cmd = std::string("echo ") + user_path + " > /tmp/user_dir";
     system(cmd.c_str());

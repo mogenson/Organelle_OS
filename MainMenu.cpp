@@ -69,7 +69,7 @@ MainMenu::MainMenu() {
 static const std::string MOTHER_PD_VERSION ="1.2";
 
 bool MainMenu::isMotherPdCompatible(const std::string& motherpd) {
-    std::string cmd = std::string ("check-mother-pd.sh \"") + motherpd + "\" " + MOTHER_PD_VERSION; 
+    std::string cmd = std::string ("check-mother-pd.sh \"") + motherpd + "\" " + MOTHER_PD_VERSION;
     return ! execScript(cmd);
 }
 
@@ -266,7 +266,7 @@ void MainMenu::runPatch(const char* name, const char* arg) {
             sprintf(buf2, "find \"%s\" -type f -name 'abl_link~.pd_linux' -exec mv {} {}.orig \\;", patchlocation.c_str());
             printf("running: %s \n", buf2);
             system(buf2);
-#endif 
+#endif
 
             std::string mother = getSystemFile(paths, "mother.pd");
             if (mother.length() == 0) {
@@ -607,7 +607,7 @@ void MainMenu::buildMenu(signed mm_pos) {
 
     // System menu
     addMenuItem(numMenuEntries++, MM_TITLE[currentMenu], "", &MainMenu::runDoNothing);
-    
+
     systemMenuOffset = numMenuEntries;
 
 #ifdef PWR_SWITCH
@@ -615,8 +615,8 @@ void MainMenu::buildMenu(signed mm_pos) {
 #else
     addMenuItem(numMenuEntries++, "Shutdown", "Shutdown", &MainMenu::runShutdown);
 #endif
-    
-    
+
+
     switch (currentMenu) {
     case MenuMode::M_STORAGE: {
         addMenuItem(numMenuEntries++, "Eject", "Eject", &MainMenu::runEject);
@@ -746,7 +746,7 @@ void MainMenu::buildMenu(signed mm_pos) {
             for (i = 0; i < n; i++) {
                 char* fname = namelist[i]->d_name;
                 if (fname[0]!='.') {
-                    switch(namelist[i]->d_type) { 
+                    switch(namelist[i]->d_type) {
                     case DT_DIR : {
                         std::string patchlocation = app.getPatchDir() + "/" + fname;
                         std::string mainpd = patchlocation + "/main.pd";
@@ -790,7 +790,7 @@ void MainMenu::buildMenu(signed mm_pos) {
                                 ext[i] = std::toupper(fname[len-4+i]);
                             }
                             if(strcmp(ext,".ZIP")==0
-                            || strcmp(ext,".ZOP")==0) { 
+                            || strcmp(ext,".ZOP")==0) {
                                 numPatches++;
                                 std::string itm = std::string("Install ") + fname;
                                 addMenuItem(numMenuEntries++, itm.c_str() , fname, &MainMenu::runInstaller);
@@ -798,10 +798,10 @@ void MainMenu::buildMenu(signed mm_pos) {
                         }
                         break;
                     } //DT_REG
-                    default: 
+                    default:
                         break;
 
-                    }// switch 
+                    }// switch
                 }
                 free(namelist[i]);
             }
@@ -827,12 +827,12 @@ void MainMenu::buildMenu(signed mm_pos) {
     }
 
     switch(mm_pos) {
-        case -1 :  menuOffset = patchMenuOffset - 1 ;break; 
+        case -1 :  menuOffset = patchMenuOffset - 1 ;break;
         case MenuMode::M_SETTINGS: menuOffset = 1; break;
         case MenuMode::M_EXTRA: menuOffset = 1; break;
         case MenuMode::M_MAIN: menuOffset = 1; break;
         case MenuMode::M_STORAGE: menuOffset = 1; break;
-        default:  menuOffset = patchMenuOffset - 1 ;break; 
+        default:  menuOffset = patchMenuOffset - 1 ;break;
     }
     cursorOffset = 1;
     drawPatchList();

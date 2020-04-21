@@ -15,7 +15,7 @@ void Timer::reset(void) {
 
 
 // time in ms
-float Timer::getElapsed(void) {  
+float Timer::getElapsed(void) {
     gettimeofday(&stop, NULL);
     long elapsed_sec = stop.tv_sec - start.tv_sec;
     long elapsed_usec = stop.tv_usec - start.tv_usec;

@@ -30,7 +30,7 @@ int SLIPEncodedSerial::sendMessage(const uint8_t *buf, uint32_t len, Serial &s)
 int SLIPEncodedSerial::recvMessage(Serial &s)
 {
     int i, len;
-    
+
     // fill up recv buffer from serial port
     len = s.readBuffer(serialIn, SERIAL_READ_SIZE);
     if (len == -1) {
@@ -45,16 +45,16 @@ int SLIPEncodedSerial::recvMessage(Serial &s)
             if (rxBufHead >= (RX_BUF_SIZE - 1)) rxBufHead = 0;
         }
     }
-   
+
     // process rx buffer, this might return before the whole thing
     // is proccessed,  but we'll just get it next time
     while (rxBufTail != rxBufHead) {
-       
+
        uint8_t tmp8 = rxBuf[rxBufTail++];
         if (rxBufTail >= (RX_BUF_SIZE - 1)) rxBufTail = 0;
-    
+
       //  uint8_t tmp8 = serialIn[i];
-        
+
         if (rstate == WAITING) {
             if (tmp8 == eot) rstate = WAITING; // just keep waiting for something afer EOT
             else {
@@ -77,7 +77,7 @@ int SLIPEncodedSerial::recvMessage(Serial &s)
     } // gettin bytes
     return 0;
 }
- 
+
 //encode SLIP, put it in the encoded buffer
 void SLIPEncodedSerial::encode(uint8_t b){
     if(b == eot){
@@ -91,10 +91,10 @@ void SLIPEncodedSerial::encode(uint8_t b){
     }
 }
 
-void SLIPEncodedSerial::encode(const uint8_t *buf, int size) 
-{  
+void SLIPEncodedSerial::encode(const uint8_t *buf, int size)
+{
     beginPacket();
-    while(size--) encode(*buf++); 
+    while(size--) encode(*buf++);
     endPacket();
 }
 

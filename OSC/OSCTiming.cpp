@@ -2,24 +2,24 @@
  Written by Adrian Freed, The Center for New Music and Audio Technologies,
  University of California, Berkeley.  Copyright (c) 2013, The Regents of
  the University of California (Regents).
- 
+
  Permission to use, copy, modify, distribute, and distribute modified versions
  of this software and its documentation without fee and without a signed
  licensing agreement, is hereby granted, provided that the above copyright
  notice, this paragraph and the following two paragraphs appear in all copies,
  modifications, and distributions.
- 
+
  IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING
  OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF REGENTS HAS
  BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  PURPOSE. THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
  HEREUNDER IS PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE
  MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- 
+
  For bug reports and feature requests please email me at yotam@cnmat.berkeley.edu
  */
 
@@ -34,10 +34,10 @@ static uint32_t savedcount, savedcurrent;
 
 static void latchOscTime()
 {
-    
+
     uint32_t istatus;
     uint32_t count, current;
-    
+
     __disable_irq();
     current = SYST_CVR;
     count = systick_millis_count;
@@ -52,14 +52,14 @@ static void latchOscTime()
 }
 static osctime_t computeOscTime()
 { //4,294,967,296
-   
-    
+
+
         osctime_t t;
 
-    
+
    t.seconds =   (( uint64_t)(savedcount/1000))  ;
-    
-    
+
+
    t.fractionofseconds = ( (uint64_t)(4294967295) *  (  (savedcount * 1000 + (uint64_t)savedcurrent / (F_CPU / 1000000UL))    % 1000000)   ) /1000000;
     return t;
 }
@@ -70,7 +70,7 @@ osctime_t oscTime()
     return computeOscTime();
 }
 
-#elif defined(CORE_TEENSY) 
+#elif defined(CORE_TEENSY)
 extern volatile uint32_t timer0_millis_count;
 static uint32_t savedcount, savedmicros;
 
@@ -91,11 +91,11 @@ static osctime_t computeOscTime()
     return t;
 #ifdef ddfgsdfgsdfgsdfg
     return ((savedcount/1000)<<32) + ( (4294967295ULL) *  (  (savedcount * 1000ULL + savedmicros)    % 1000000ULL)   ) /1000000ULL
-    
+
     ;
 #endif
 
-    
+
 }
 osctime_t oscTime()
 {
@@ -126,8 +126,8 @@ osctime_t computeOscTime()
     t.seconds  = savedcount/1000;
     return t;
 
-    
-    
+
+
 }
 osctime_t oscTime()
 {
@@ -155,7 +155,7 @@ osctime_t oscTime()
 int adcRead(int pin, osctime_t *t)
 {
     latchOscTime();
-    
+
     int v =0;//analogRead(pin);
     *t = oscTime();
     return v;
@@ -165,16 +165,16 @@ int capacitanceRead(int pin, osctime_t *t)
 {
     latchOscTime();
     int v =  touchRead(pin);
-    
+
     *t = oscTime();
     return v;
 }
 #endif
 int inputRead(int pin, osctime_t *t)
 {
-    
+
     int v =0;//digitalRead(pin);
     *t = oscTime();
-    
+
     return v;
 }

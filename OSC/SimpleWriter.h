@@ -3,7 +3,7 @@
 #define SimpleWriter_h
 
 
-#include <stdint.h> 
+#include <stdint.h>
 
 
 class SimpleWriter
