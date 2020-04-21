@@ -49,7 +49,7 @@
 
 //ERRORS/////////////////////////////////////////////////
 typedef enum { OSC_OK = 0,
-	BUFFER_FULL, INVALID_OSC, ALLOCFAILED, INDEX_OUT_OF_BOUNDS
+    BUFFER_FULL, INVALID_OSC, ALLOCFAILED, INDEX_OUT_OF_BOUNDS
 } OSCErrorCode;
 
 class OSCData 
@@ -58,7 +58,7 @@ class OSCData
 private:
     
     //friends
-	friend class OSCMessage;
+    friend class OSCMessage;
     
     //should only be used while decoding
     //leaves an invalid OSCMessage with a type, but no data
@@ -66,44 +66,44 @@ private:
        
 public:
 
-	//an error flag
-	OSCErrorCode error;
+    //an error flag
+    OSCErrorCode error;
 
-	//the size (in bytes) of the data
-	int bytes;
+    //the size (in bytes) of the data
+    int bytes;
 
-	//the type of the data
-	int type;
+    //the type of the data
+    int type;
 
-	//the data
-	union {
-		char * s; //string
-		int32_t i; //int
-		float f; //float
-		double d; //double
+    //the data
+    union {
+        char * s; //string
+        int32_t i; //int
+        float f; //float
+        double d; //double
         uint64_t l; //long
-		uint8_t * b; //blob
+        uint8_t * b; //blob
         osctime_t time;
-	} data;
+    } data;
 
-	//overload the constructor to account for all the types and sizes
-	OSCData(const char * s);
+    //overload the constructor to account for all the types and sizes
+    OSCData(const char * s);
 #if defined(__SAM3X8E__)
-	OSCData (int16_t);
+    OSCData (int16_t);
 #endif
-//	OSCData (int32_t);
+//  OSCData (int32_t);
     OSCData (int);
     OSCData (unsigned int);
-	OSCData (float);
-	OSCData (double);
-	OSCData (uint8_t *, int);
+    OSCData (float);
+    OSCData (double);
+    OSCData (uint8_t *, int);
     //accepts another OSCData objects and clones it
-	OSCData (OSCData *);
+    OSCData (OSCData *);
    // OSCData  (boolean);
     OSCData  (osctime_t);
 
-	//destructor
-	~OSCData();
+    //destructor
+    ~OSCData();
     
     //GETTERS
     int32_t getInt();
@@ -115,9 +115,9 @@ public:
     osctime_t getTime();
     
     //constructor from byte array with type and length
-	OSCData(char, uint8_t *, int);
+    OSCData(char, uint8_t *, int);
     //fill the passed in buffer with the data
-	//uint8_t * asByteArray();
+    //uint8_t * asByteArray();
 
 };
 

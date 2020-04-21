@@ -301,13 +301,13 @@ int main(int argc, char* argv[]) {
                 if (app.oled(AppData::MENU).newScreen) {
                     app.oled(AppData::MENU).newScreen = 0;
 
-		            if (! (app.isPatchRunning() || app.isPatchLoading()) ) {
+                    if (! (app.isPatchRunning() || app.isPatchLoading()) ) {
 #ifdef BATTERY_METER
-			            app.oled(AppData::MENU).drawNotification("Select patch", controls.pwrStatus, controls.batteryBars, app.wifiStatus);
+                        app.oled(AppData::MENU).drawNotification("Select patch", controls.pwrStatus, controls.batteryBars, app.wifiStatus);
 #else
-			            app.oled(AppData::MENU).drawNotification("Select patch");
+                        app.oled(AppData::MENU).drawNotification("Select patch");
 #endif
-		            } else {
+                    } else {
 #ifdef BATTERY_METER
                         app.oled(AppData::MENU).drawNotification(app.getCurrentPatch(), controls.pwrStatus, controls.batteryBars, app.wifiStatus);
 #else
@@ -533,8 +533,8 @@ void gFrame(OSCMessage &msg) {
         len = msg.getBlob(1, tmp, 1028);
         // only if we got 1024 values (len and tmp includes the 4 size bytes of blob)
         if (len == 1028) {
-		// copy it right to screen buffer
-        	memcpy(app.oled(gScreen(msg.getInt(0))).pix_buf, tmp + 4, 1024);
+        // copy it right to screen buffer
+            memcpy(app.oled(gScreen(msg.getInt(0))).pix_buf, tmp + 4, 1024);
         }
     }
 }
@@ -692,7 +692,7 @@ void vuMeter(OSCMessage &msg) {
         app.inL = msg.getInt(1);
         app.outR = msg.getInt(2);
         app.outL = msg.getInt(3);
-	app.peaks = msg.getInt(4);
+    app.peaks = msg.getInt(4);
         app.oled((AppData::Screen) app.currentScreen).newScreen = 1;
     }
 

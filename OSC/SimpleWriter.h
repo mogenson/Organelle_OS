@@ -15,7 +15,7 @@ public:
     uint8_t length;
     void start(void);
     void end(void);
-	void write(uint8_t b);
+    void write(uint8_t b);
     void write(const uint8_t *buffer, int size);
 
 };

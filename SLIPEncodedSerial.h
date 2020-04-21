@@ -18,8 +18,8 @@ class SLIPEncodedSerial
 private:
 
 public:
-	
-	SLIPEncodedSerial();
+    
+    SLIPEncodedSerial();
     
     uint8_t rstate;
 
@@ -43,13 +43,13 @@ public:
     
 
     //SLIP specific method which begins a transmitted packet
-	void beginPacket();
-	
-	//SLIP specific method which ends a transmittedpacket
-	void endPacket();
+    void beginPacket();
+    
+    //SLIP specific method which ends a transmittedpacket
+    void endPacket();
    
     void encode(const uint8_t *buf, int size);
-	void encode(uint8_t b);
+    void encode(uint8_t b);
     
     void decode(const uint8_t *buf, int size);
 

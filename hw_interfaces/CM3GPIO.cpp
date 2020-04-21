@@ -59,42 +59,42 @@
 
 // OLED init bytes
 static unsigned char oled_initcode[] = {
-	// Initialisation sequence
-	SSD1306_DISPLAYOFF,                     // 0xAE
-	SSD1306_SETLOWCOLUMN,                   // low col = 0
-	SSD1306_SETHIGHCOLUMN,                  // hi col = 0
-	SSD1306_SETSTARTLINE,                   // line #0
-	SSD1306_SETCONTRAST,                    // 0x81
-	0xCF,
-	0xa1,                                   // setment remap 95 to 0 (?)
-	SSD1306_NORMALDISPLAY,                  // 0xA6
-	SSD1306_DISPLAYALLON_RESUME,            // 0xA4
-	SSD1306_SETMULTIPLEX,                   // 0xA8
-	0x3F,                                   // 0x3F 1/64 duty
-	SSD1306_SETDISPLAYOFFSET,               // 0xD3
-	0x0,                                    // no offset
-	SSD1306_SETDISPLAYCLOCKDIV,             // 0xD5
-	0xF0,                                   // the suggested ratio 0x80
-	SSD1306_SETPRECHARGE,                   // 0xd9
-	0xF1,
-	SSD1306_SETCOMPINS,                     // 0xDA
-	0x12,                                   // disable COM left/right remap
-	SSD1306_SETVCOMDETECT,                  // 0xDB
-	0x40,                                   // 0x20 is default?
-	SSD1306_MEMORYMODE,                     // 0x20
-	0x00,                                   // 0x0 act like ks0108
-	SSD1306_SEGREMAP | 0x1,
-	SSD1306_COMSCANDEC,
-	SSD1306_CHARGEPUMP,                     //0x8D
-	0x14,
-	// Enabled the OLED panel
-	SSD1306_DISPLAYON
+    // Initialisation sequence
+    SSD1306_DISPLAYOFF,                     // 0xAE
+    SSD1306_SETLOWCOLUMN,                   // low col = 0
+    SSD1306_SETHIGHCOLUMN,                  // hi col = 0
+    SSD1306_SETSTARTLINE,                   // line #0
+    SSD1306_SETCONTRAST,                    // 0x81
+    0xCF,
+    0xa1,                                   // setment remap 95 to 0 (?)
+    SSD1306_NORMALDISPLAY,                  // 0xA6
+    SSD1306_DISPLAYALLON_RESUME,            // 0xA4
+    SSD1306_SETMULTIPLEX,                   // 0xA8
+    0x3F,                                   // 0x3F 1/64 duty
+    SSD1306_SETDISPLAYOFFSET,               // 0xD3
+    0x0,                                    // no offset
+    SSD1306_SETDISPLAYCLOCKDIV,             // 0xD5
+    0xF0,                                   // the suggested ratio 0x80
+    SSD1306_SETPRECHARGE,                   // 0xd9
+    0xF1,
+    SSD1306_SETCOMPINS,                     // 0xDA
+    0x12,                                   // disable COM left/right remap
+    SSD1306_SETVCOMDETECT,                  // 0xDB
+    0x40,                                   // 0x20 is default?
+    SSD1306_MEMORYMODE,                     // 0x20
+    0x00,                                   // 0x0 act like ks0108
+    SSD1306_SEGREMAP | 0x1,
+    SSD1306_COMSCANDEC,
+    SSD1306_CHARGEPUMP,                     //0x8D
+    0x14,
+    // Enabled the OLED panel
+    SSD1306_DISPLAYON
 };
 
 static unsigned char oled_poscode[] = {
-   	SSD1306_SETLOWCOLUMN,                   // low col = 0
-	SSD1306_SETHIGHCOLUMN,                  // hi col = 0
-	SSD1306_SETSTARTLINE                    // line #0
+    SSD1306_SETLOWCOLUMN,                   // low col = 0
+    SSD1306_SETHIGHCOLUMN,                  // hi col = 0
+    SSD1306_SETSTARTLINE                    // line #0
 };
 
 CM3GPIO::CM3GPIO() {
@@ -216,9 +216,9 @@ void CM3GPIO::pollKnobs(){
     num &= 0xf;
     if (!num) {
         battAvg >>= 4;
-	    // calculate voltage, the 10.3125 is from the voltage divider
-    	batteryVoltage = ((float)battAvg / 1024) * 10.3125;
-	    battAvg = 0;
+        // calculate voltage, the 10.3125 is from the voltage divider
+        batteryVoltage = ((float)battAvg / 1024) * 10.3125;
+        battAvg = 0;
 
         // get bars 
         if      (batteryVoltage > BATTERY_BAR_5) batteryBars = 5;
@@ -399,65 +399,65 @@ void CM3GPIO::getKeys(void){
 
 void CM3GPIO::getEncoder(void){
 
-	static uint8_t encoder_last = 0;
-	uint8_t encoder = 0;
+    static uint8_t encoder_last = 0;
+    uint8_t encoder = 0;
 
-	#define PRESS 0
-	#define RELEASE 1
-	uint8_t button;
-	static uint8_t button_last = RELEASE;
-	static uint8_t press_count = 0;
-	static uint8_t release_count = 0;
+    #define PRESS 0
+    #define RELEASE 1
+    uint8_t button;
+    static uint8_t button_last = RELEASE;
+    static uint8_t press_count = 0;
+    static uint8_t release_count = 0;
 
-	button = (pinValues >> 4) & 0x1;
-	if (button == PRESS) {
-		press_count++;
-		release_count = 0;
-	}
-	if ((press_count > 10) && (button_last == RELEASE)){	// press
-			button_last = PRESS;
-			release_count = 0;
+    button = (pinValues >> 4) & 0x1;
+    if (button == PRESS) {
+        press_count++;
+        release_count = 0;
+    }
+    if ((press_count > 10) && (button_last == RELEASE)){    // press
+            button_last = PRESS;
+            release_count = 0;
             encBut = 1;
             encButFlag = 1;
-	}
+    }
 
-	if (button == RELEASE) {
-		release_count++;
-		press_count = 0;
-	}
-	if ((release_count > 10) && (button_last == PRESS)){	// release
-			button_last = RELEASE;
-			press_count = 0;
+    if (button == RELEASE) {
+        release_count++;
+        press_count = 0;
+    }
+    if ((release_count > 10) && (button_last == PRESS)){    // release
+            button_last = RELEASE;
+            press_count = 0;
             encBut = 0;
             encButFlag = 1;
-	}
+    }
 
-	// turning
-	encoder = (pinValues >> 5) & 0x3;
-	
+    // turning
+    encoder = (pinValues >> 5) & 0x3;
+    
     if (encoder != encoder_last) {
         if (encoder_last == 0) {
-	    if (encoder == 2){
-	        encTurn = 1;
+        if (encoder == 2){
+            encTurn = 1;
                 encTurnFlag = 1;
             }
             if (encoder == 1){
                 encTurn = 0;
                 encTurnFlag = 1; 
-	    }
+        }
         }
         if (encoder_last == 3) {
-	    if (encoder == 1){
+        if (encoder == 1){
                 encTurn = 1;
                 encTurnFlag = 1;
-	    }
+        }
             if (encoder == 2){
                 encTurn = 0;
                 encTurnFlag = 1;
             }
         }
         encoder_last = encoder;
-	}
+    }
 }
 
 uint32_t CM3GPIO::adcRead(uint8_t adcnum)

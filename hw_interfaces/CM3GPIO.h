@@ -43,8 +43,8 @@ class CM3GPIO
         // organelle m specific stuff
         uint32_t pwrStatus;
         uint32_t micSelSwitch;
-	    float batteryVoltage;
-	    uint32_t batteryBars;
+        float batteryVoltage;
+        uint32_t batteryBars;
         bool lowBatteryShutdown;
 
     private:        
@@ -53,7 +53,7 @@ class CM3GPIO
         void getKeys();
         uint32_t adcRead(uint8_t adcnum);
         void displayPinValues();
-	void checkFootSwitch ();
+    void checkFootSwitch ();
         
         uint32_t pinValues;
         uint32_t pinValuesLast;

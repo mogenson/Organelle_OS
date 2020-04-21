@@ -26,50 +26,50 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
-	/**
-	 * Switch this off to disable matching against a pattern with 2 stars
-	 */
-    //#define OSC_MATCH_ENABLE_2STARS		1
-	/**
-	 * Switch this off to disable matching against a pattern with more than 2 stars which will
-	 * be done recursively.
-	 */
-    //#define OSC_MATCH_ENABLE_NSTARS		1
-	
-	/**
-	 * Return code for osc_match() that indicates that the entire address was successfully matched
-	 */
-#define OSC_MATCH_ADDRESS_COMPLETE	1
-	
-	/**
-	 * Return code for osc_match() that indicates that the entire pattern was successfully matched
-	 */
-#define OSC_MATCH_PATTERN_COMPLETE	2
-	/*
-	 typedef struct _osc_callback {
-	 const char* address;			// Address
-	 struct _osc_callback *child;		// RAM
-	 struct _osc_callback *sibling;		// RAM
-	 struct _osc_callback *parent;		// RAM
-	 int callback;				// ROM
-	 } osc_callback;
-	 */
-	
-	/**
-	 * Match a pattern against an address.  In the case of a partial match, pattern_offset
-	 * and address_offset will contain the number of bytes into their respective strings
-	 * where the match failed.
-	 *
-	 * @param pattern The pattern to match
-	 * @param address The address to match
-	 * @param pattern_offset The number of bytes into the pattern that were matched successfully
-	 * @param address_offset The number of bytes into the address that were matched successfully
-	 * @return 0 if the match failed altogether, or an or'd combination of OSC_MATCH_ADDRESS_COMPLETE and
-	 * OSC_MATCH_PATTERN_COMPLETE.
-	 */
-	int osc_match(const char *pattern, const char *address, int *pattern_offset, int *address_offset);
-	
+    
+    /**
+     * Switch this off to disable matching against a pattern with 2 stars
+     */
+    //#define OSC_MATCH_ENABLE_2STARS       1
+    /**
+     * Switch this off to disable matching against a pattern with more than 2 stars which will
+     * be done recursively.
+     */
+    //#define OSC_MATCH_ENABLE_NSTARS       1
+    
+    /**
+     * Return code for osc_match() that indicates that the entire address was successfully matched
+     */
+#define OSC_MATCH_ADDRESS_COMPLETE  1
+    
+    /**
+     * Return code for osc_match() that indicates that the entire pattern was successfully matched
+     */
+#define OSC_MATCH_PATTERN_COMPLETE  2
+    /*
+     typedef struct _osc_callback {
+     const char* address;           // Address
+     struct _osc_callback *child;       // RAM
+     struct _osc_callback *sibling;     // RAM
+     struct _osc_callback *parent;      // RAM
+     int callback;              // ROM
+     } osc_callback;
+     */
+    
+    /**
+     * Match a pattern against an address.  In the case of a partial match, pattern_offset
+     * and address_offset will contain the number of bytes into their respective strings
+     * where the match failed.
+     *
+     * @param pattern The pattern to match
+     * @param address The address to match
+     * @param pattern_offset The number of bytes into the pattern that were matched successfully
+     * @param address_offset The number of bytes into the address that were matched successfully
+     * @return 0 if the match failed altogether, or an or'd combination of OSC_MATCH_ADDRESS_COMPLETE and
+     * OSC_MATCH_PATTERN_COMPLETE.
+     */
+    int osc_match(const char *pattern, const char *address, int *pattern_offset, int *address_offset);
+    
 #ifdef __cplusplus
 }
 #endif

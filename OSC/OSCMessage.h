@@ -33,28 +33,28 @@
 
 class OSCMessage
 {
-	
+    
 private:
     
     //friends
-	friend class OSCBundle;
+    friend class OSCBundle;
 
 
 /*=============================================================================
-	PRIVATE VARIABLES
+    PRIVATE VARIABLES
 =============================================================================*/
 
-	//the address
-	char * address;
+    //the address
+    char * address;
 
-	//the data
-	OSCData ** data;
+    //the data
+    OSCData ** data;
 
-	//the number of OSCData in the data array
-	int dataCount;
+    //the number of OSCData in the data array
+    int dataCount;
 
-	//error codes for potential runtime problems
-	OSCErrorCode error;
+    //error codes for potential runtime problems
+    OSCErrorCode error;
     
 /*=============================================================================
     DECODING INCOMING BYTES
@@ -89,223 +89,223 @@ private:
     void decodeData(uint8_t);
 
 /*=============================================================================
-	HELPER FUNCTIONS
+    HELPER FUNCTIONS
 =============================================================================*/
 
-	void setupMessage();
+    void setupMessage();
 
-	//compares the OSCData's type char to a test char
-	bool testType(int position, char type);
+    //compares the OSCData's type char to a test char
+    bool testType(int position, char type);
 
-	//returns the number of bytes to pad to make it 4-bit aligned
-    //	int padSize(int bytes);
+    //returns the number of bytes to pad to make it 4-bit aligned
+    //  int padSize(int bytes);
     
 public:
 
-	//returns the OSCData at that position
-	OSCData * getOSCData(int);
+    //returns the OSCData at that position
+    OSCData * getOSCData(int);
 
 /*=============================================================================
-	CONSTRUCTORS / DESTRUCTOR
+    CONSTRUCTORS / DESTRUCTOR
 =============================================================================*/
-	
-	//new constructor needs an address
-	OSCMessage (const char * _address);
+    
+    //new constructor needs an address
+    OSCMessage (const char * _address);
     //no address
     //placeholder since it's invalide OSC
-	OSCMessage();
+    OSCMessage();
     
-	//can optionally accept all of the data after the address
-	//OSCMessage(const char * _address, char * types, ... );
+    //can optionally accept all of the data after the address
+    //OSCMessage(const char * _address, char * types, ... );
     //created from another OSCMessage
     OSCMessage (OSCMessage *);
 
-	//DESTRUCTOR
-	~OSCMessage();
+    //DESTRUCTOR
+    ~OSCMessage();
 
-	//empties all of the data
-	void empty();
+    //empties all of the data
+    void empty();
 
 /*=============================================================================
-	SETTING  DATA
+    SETTING  DATA
 =============================================================================*/
 
-	//returns the OSCMessage so that multiple 'add's can be strung together
-	template <typename T> 
-	OSCMessage& add(T datum){
-		//make a piece of data
-		OSCData * d = new OSCData(datum);
-		//check if it has any errors
-		if (d->error == ALLOCFAILED){
-			error = ALLOCFAILED;
-		} else {
-			//resize the data array
-			OSCData ** dataMem = (OSCData **) realloc(data, sizeof(OSCData *) * (dataCount + 1));
-			if (dataMem == NULL){
-				error = ALLOCFAILED;
-			} else {
-				data = dataMem;
-				//add data to the end of the array
-				data[dataCount] = d;
-				//increment the data size
-				dataCount++;
-			}
-		}
-		return *this;
-	}
+    //returns the OSCMessage so that multiple 'add's can be strung together
+    template <typename T> 
+    OSCMessage& add(T datum){
+        //make a piece of data
+        OSCData * d = new OSCData(datum);
+        //check if it has any errors
+        if (d->error == ALLOCFAILED){
+            error = ALLOCFAILED;
+        } else {
+            //resize the data array
+            OSCData ** dataMem = (OSCData **) realloc(data, sizeof(OSCData *) * (dataCount + 1));
+            if (dataMem == NULL){
+                error = ALLOCFAILED;
+            } else {
+                data = dataMem;
+                //add data to the end of the array
+                data[dataCount] = d;
+                //increment the data size
+                dataCount++;
+            }
+        }
+        return *this;
+    }
     
     //blob specific add
     OSCMessage& add(uint8_t * blob, int length){
-		//make a piece of data
-		OSCData * d = new OSCData(blob, length);
-		//check if it has any errors
-		if (d->error == ALLOCFAILED){
-			error = ALLOCFAILED;
-		} else {
-			//resize the data array
-			OSCData ** dataMem = (OSCData **) realloc(data, sizeof(OSCData *) * (dataCount + 1));
-			if (dataMem == NULL){
-				error = ALLOCFAILED;
-			} else {
-				data = dataMem;
-				//add data to the end of the array
-				data[dataCount] = d;
-				//increment the data size
-				dataCount++;
-			}
-		}
-		return *this;
-	}
+        //make a piece of data
+        OSCData * d = new OSCData(blob, length);
+        //check if it has any errors
+        if (d->error == ALLOCFAILED){
+            error = ALLOCFAILED;
+        } else {
+            //resize the data array
+            OSCData ** dataMem = (OSCData **) realloc(data, sizeof(OSCData *) * (dataCount + 1));
+            if (dataMem == NULL){
+                error = ALLOCFAILED;
+            } else {
+                data = dataMem;
+                //add data to the end of the array
+                data[dataCount] = d;
+                //increment the data size
+                dataCount++;
+            }
+        }
+        return *this;
+    }
 
-	//sets the data at a position
-	template <typename T> 
-	void set(int position, T datum){
-		if (position < dataCount){
-			//replace the OSCData with a new one
-			OSCData * oldDatum = getOSCData(position);
-			//destroy the old one
-			delete oldDatum;
-			//make a new one
-			OSCData * newDatum = new OSCData(datum);
-			//test if there was an error
-			if (newDatum->error == ALLOCFAILED){
-				error = ALLOCFAILED;
-			} else {
-				//otherwise, put it in the data array
-				data[position] = newDatum;
-			}
-		} else if (position == (dataCount)){
-			//add the data to the end
-			add(datum);
-		} else {
-			//else out of bounds error
-			error = INDEX_OUT_OF_BOUNDS;
-		}
-	}
+    //sets the data at a position
+    template <typename T> 
+    void set(int position, T datum){
+        if (position < dataCount){
+            //replace the OSCData with a new one
+            OSCData * oldDatum = getOSCData(position);
+            //destroy the old one
+            delete oldDatum;
+            //make a new one
+            OSCData * newDatum = new OSCData(datum);
+            //test if there was an error
+            if (newDatum->error == ALLOCFAILED){
+                error = ALLOCFAILED;
+            } else {
+                //otherwise, put it in the data array
+                data[position] = newDatum;
+            }
+        } else if (position == (dataCount)){
+            //add the data to the end
+            add(datum);
+        } else {
+            //else out of bounds error
+            error = INDEX_OUT_OF_BOUNDS;
+        }
+    }
     
     //blob specific setter
     void set(int position, uint8_t * blob, int length){
         if (position < dataCount){
-			//replace the OSCData with a new one
-			OSCData * oldDatum = getOSCData(position);
-			//destroy the old one
-			delete oldDatum;
-			//make a new one
-			OSCData * newDatum = new OSCData(blob, length);
-			//test if there was an error
-			if (newDatum->error == ALLOCFAILED){
-				error = ALLOCFAILED;
-			} else {
-				//otherwise, put it in the data array
-				data[position] = newDatum;
-			}
-		} else if (position == (dataCount)){
-			//add the data to the end
-			add(blob, length);
-		} else {
-			//else out of bounds error
-			error = INDEX_OUT_OF_BOUNDS;
-		}
+            //replace the OSCData with a new one
+            OSCData * oldDatum = getOSCData(position);
+            //destroy the old one
+            delete oldDatum;
+            //make a new one
+            OSCData * newDatum = new OSCData(blob, length);
+            //test if there was an error
+            if (newDatum->error == ALLOCFAILED){
+                error = ALLOCFAILED;
+            } else {
+                //otherwise, put it in the data array
+                data[position] = newDatum;
+            }
+        } else if (position == (dataCount)){
+            //add the data to the end
+            add(blob, length);
+        } else {
+            //else out of bounds error
+            error = INDEX_OUT_OF_BOUNDS;
+        }
     }
     
     void setAddress(const char *);
 
 /*=============================================================================
-	GETTING DATA
+    GETTING DATA
 
-	getters take a position as an argument
+    getters take a position as an argument
 =============================================================================*/
 
-	int32_t getInt(int);
+    int32_t getInt(int);
     osctime_t getTime(int);
 
-	float getFloat(int);
-	double getDouble(int);
+    float getFloat(int);
+    double getDouble(int);
     bool getBoolean(int);
 
-	//return the copied string's length
-	int getString(int, char *, int);
-	//returns the number of unsigned int8's copied into the buffer
-	int getBlob(int, uint8_t *, int);
+    //return the copied string's length
+    int getString(int, char *, int);
+    //returns the number of unsigned int8's copied into the buffer
+    int getBlob(int, uint8_t *, int);
 
-	//returns the number of bytes of the data at that position
-	int getDataLength(int);
+    //returns the number of bytes of the data at that position
+    int getDataLength(int);
 
-	//returns the type at the position
-	char getType(int);
+    //returns the type at the position
+    char getType(int);
 
-	//put the address in the buffer
-	int getAddress(char * buffer, int offset = 0);
-	int getAddress(char * buffer, int offset, int len);
-	
-	// TODO: int getAddressLength(int offset = 0);
-	
+    //put the address in the buffer
+    int getAddress(char * buffer, int offset = 0);
+    int getAddress(char * buffer, int offset, int len);
+    
+    // TODO: int getAddressLength(int offset = 0);
+    
 
 /*=============================================================================
-	TESTING DATA
+    TESTING DATA
 
-	testers take a position as an argument
+    testers take a position as an argument
 =============================================================================*/
 
-	bool isInt(int);
-	bool isFloat(int);
-	bool isBlob(int);
-	bool isChar(int);
-	bool isString(int);
-	bool isDouble(int);
+    bool isInt(int);
+    bool isFloat(int);
+    bool isBlob(int);
+    bool isChar(int);
+    bool isString(int);
+    bool isDouble(int);
     bool isBoolean(int);
     bool isTime(int);
-		
+        
 /*=============================================================================
-	PATTERN MATCHING
+    PATTERN MATCHING
 =============================================================================*/
-	
-	//match the pattern against the address
-	//returns true only for a complete match
-	bool fullMatch( const char * pattern, int = 0);
-	
-	//returns the number of characters matched in the address
-	int match( const char * pattern, int = 0);
-	
-	//calls the function with the message as the arg if it was a full match
-	bool dispatch(const char * pattern, void (*callback)(OSCMessage &), int = 0);
-	
-	//like dispatch, but allows for partial matches
-	//the address match offset is sent as an argument to the callback
-	//also room for an option address offset to allow for multiple nested routes
-	bool route(const char * pattern, void (*callback)(OSCMessage &, int), int = 0);
-	
+    
+    //match the pattern against the address
+    //returns true only for a complete match
+    bool fullMatch( const char * pattern, int = 0);
+    
+    //returns the number of characters matched in the address
+    int match( const char * pattern, int = 0);
+    
+    //calls the function with the message as the arg if it was a full match
+    bool dispatch(const char * pattern, void (*callback)(OSCMessage &), int = 0);
+    
+    //like dispatch, but allows for partial matches
+    //the address match offset is sent as an argument to the callback
+    //also room for an option address offset to allow for multiple nested routes
+    bool route(const char * pattern, void (*callback)(OSCMessage &, int), int = 0);
+    
 
 
 /*=============================================================================
-	SIZE
+    SIZE
 =============================================================================*/
-	
-	//the number of data that the message contains
-	int size();
-	
-	//computes the number of bytes the OSCMessage occupies if everything is 32-bit aligned
-	int bytes();
+    
+    //the number of data that the message contains
+    int size();
+    
+    //computes the number of bytes the OSCMessage occupies if everything is 32-bit aligned
+    int bytes();
     
 /*=============================================================================
     TRANSMISSION
@@ -318,14 +318,14 @@ public:
     //fill the message from a byte stream
     void fill(uint8_t);
     void fill(uint8_t *, int);
-		
+        
 /*=============================================================================
-	ERROR
+    ERROR
 =============================================================================*/
 
-	bool hasError();
+    bool hasError();
 
-	OSCErrorCode getError();
+    OSCErrorCode getError();
 
 };
 

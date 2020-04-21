@@ -35,19 +35,19 @@ static uint32_t savedcount, savedcurrent;
 static void latchOscTime()
 {
     
-	uint32_t istatus;
+    uint32_t istatus;
     uint32_t count, current;
     
-	__disable_irq();
-	current = SYST_CVR;
-	count = systick_millis_count;
-	istatus = SCB_ICSR;	// bit 26 indicates if systick exception pending
-	__enable_irq();
+    __disable_irq();
+    current = SYST_CVR;
+    count = systick_millis_count;
+    istatus = SCB_ICSR; // bit 26 indicates if systick exception pending
+    __enable_irq();
     //systick_current = current;
     //systick_count = count;
     //systick_istatus = istatus & SCB_ICSR_PENDSTSET ? 1 : 0;
-	if ((istatus & SCB_ICSR_PENDSTSET) && current > 50) count++;
-	current = ((F_CPU / 1000) - 1) - current;
+    if ((istatus & SCB_ICSR_PENDSTSET) && current > 50) count++;
+    current = ((F_CPU / 1000) - 1) - current;
     savedcount=count; savedcurrent=current;
 }
 static osctime_t computeOscTime()

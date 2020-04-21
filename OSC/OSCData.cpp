@@ -5,101 +5,101 @@
 
 osctime_t zerotime = {0,0};
 /*=============================================================================
-	CONSTRUCTORS
+    CONSTRUCTORS
 
-	overloaded methods for each of the types which will
-	set the type flag, the size (in bytes), and the data
+    overloaded methods for each of the types which will
+    set the type flag, the size (in bytes), and the data
 =============================================================================*/
 
 
 OSCData::OSCData(const char * s){
-	error = OSC_OK;
-	type = 's';
-	bytes = (strlen(s) + 1);
-	//own the data
-	char * mem = (char *) malloc(bytes);
-	if (mem == NULL){
-		error = ALLOCFAILED;
-	} else {
-		strcpy(mem, s);
-		data.s = mem;
-	}
+    error = OSC_OK;
+    type = 's';
+    bytes = (strlen(s) + 1);
+    //own the data
+    char * mem = (char *) malloc(bytes);
+    if (mem == NULL){
+        error = ALLOCFAILED;
+    } else {
+        strcpy(mem, s);
+        data.s = mem;
+    }
 }
 
 
 
 /*
 OSCData::OSCData(int32_t i){
-	error = OSC_OK;
-	type = 'i';
-	bytes = 4;
-	data.i = i;
+    error = OSC_OK;
+    type = 'i';
+    bytes = 4;
+    data.i = i;
 }*/
 OSCData::OSCData(int i){
-	error = OSC_OK;
-	type = 'i';
-	bytes = 4;
-	data.i = i;
+    error = OSC_OK;
+    type = 'i';
+    bytes = 4;
+    data.i = i;
 }
 OSCData::OSCData(unsigned int i){
-	error = OSC_OK;
-	type = 'i';
-	bytes = 4;
-	data.i = i;
+    error = OSC_OK;
+    type = 'i';
+    bytes = 4;
+    data.i = i;
 }
 #if defined(__SAM3X8E__)
 OSCData::OSCData(int16_t i){
-	error = OSC_OK;
-	type = 'i';
-	bytes = 4;
-	data.i = i;
+    error = OSC_OK;
+    type = 'i';
+    bytes = 4;
+    data.i = i;
 }
 #endif
 
 OSCData::OSCData(float f){
-	error = OSC_OK;
-	type = 'f';
-	bytes = 4;
-	data.f = f;	
+    error = OSC_OK;
+    type = 'f';
+    bytes = 4;
+    data.f = f; 
 }
 
 OSCData::OSCData(osctime_t t){
-	error = OSC_OK;
-	type = 't';
-	bytes = 8;
-	data.time = t;
+    error = OSC_OK;
+    type = 't';
+    bytes = 8;
+    data.time = t;
 }
 /*OSCData::OSCData(boolean b){
-	error = OSC_OK;
-	type = b?'T':'F';
-	bytes = 0;
+    error = OSC_OK;
+    type = b?'T':'F';
+    bytes = 0;
 }*/
 
 
 OSCData::OSCData(double d){
-	error = OSC_OK;
-	bytes = sizeof(double);
-	//if it's not 8 bytes it's not a true double
-	if (bytes == 8){
-		type = 'd';
-		data.d = d;
-	} else {
-		type = 'f';
-		data.f = d;	
-	}
+    error = OSC_OK;
+    bytes = sizeof(double);
+    //if it's not 8 bytes it's not a true double
+    if (bytes == 8){
+        type = 'd';
+        data.d = d;
+    } else {
+        type = 'f';
+        data.f = d; 
+    }
 }
 
 OSCData::OSCData(uint8_t * b, int len){
-	error = OSC_OK;
-	type = 'b';
-	bytes = len + 4;
-	//add the size to the front of the blob
-	uint32_t len32 = (uint32_t) len;
+    error = OSC_OK;
+    type = 'b';
+    bytes = len + 4;
+    //add the size to the front of the blob
+    uint32_t len32 = (uint32_t) len;
     //make sure the length is endian-safe
     len32 = BigEndian(len32);
-	uint8_t * lenPtr = (uint8_t *) (& len32);
-	//own the data
-	if(bytes>0)
+    uint8_t * lenPtr = (uint8_t *) (& len32);
+    //own the data
+    if(bytes>0)
     {
             
         uint8_t * mem = (uint8_t * ) malloc(bytes);
@@ -118,16 +118,16 @@ OSCData::OSCData(uint8_t * b, int len){
 }
 
 OSCData::OSCData (OSCData * datum){
-	error = OSC_OK;
-	type = datum->type;
-	bytes = datum->bytes;
-	if ( (type == 'i') || (type == 'f') || (type == 'd') || (type == 't')
+    error = OSC_OK;
+    type = datum->type;
+    bytes = datum->bytes;
+    if ( (type == 'i') || (type == 'f') || (type == 'd') || (type == 't')
         || (type == 'h') || (type == 'c') || (type == 'r') || (type == 'm')
         )
     {
-		data = datum->data;
-	} else if ((type == 's') || (type == 'b')){
-		//allocate a new piece of memory
+        data = datum->data;
+    } else if ((type == 's') || (type == 'b')){
+        //allocate a new piece of memory
         uint8_t * mem = (uint8_t * ) malloc(bytes);
         if (mem == NULL){
             error = ALLOCFAILED;
@@ -136,7 +136,7 @@ OSCData::OSCData (OSCData * datum){
             memcpy(mem, datum->data.b, bytes);
             data.b = mem;
         }
-	}
+    }
 }
 
 //DESTRUCTOR
@@ -155,8 +155,8 @@ OSCData::~OSCData(){
 //sets just the type as a message placeholder
 //no data
 OSCData::OSCData(char t){
-	error = INVALID_OSC;
-	type = t;
+    error = INVALID_OSC;
+    type = t;
     bytes = 0;
 }
 

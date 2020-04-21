@@ -64,8 +64,8 @@ void OledScreen::clearLine(int lineNum) {
   // fixes a problem if an old 'set line' style patch is loaded after a newer graphics patch
   // otherwise this row of pixels might not be cleared 
   if (lineNum == 1) 
-  	for (i = 0; i < 128; i++)
-      		put_pixel(0, i, 8);
+    for (i = 0; i < 128; i++)
+            put_pixel(0, i, 8);
 
   for (i = 0; i < 128; i++)
     for (j = 0; j < 11; j++)
@@ -488,7 +488,7 @@ void OledScreen::drawBatteryMeter(int lev) {
 }
 
 void OledScreen::drawPlug(void) {
-	    
+        
     int x = 112;
     int y = 0;
 
@@ -564,24 +564,24 @@ void OledScreen::drawWifiMeter(int lev) {
         put_pixel(1, x + 9, y + 0);
         put_pixel(1, x + 10, y + 0);
         
-	put_pixel(1, x + 1, y + 1);
-	put_pixel(1, x + 5, y + 1);
-	put_pixel(1, x + 9, y + 1);
+    put_pixel(1, x + 1, y + 1);
+    put_pixel(1, x + 5, y + 1);
+    put_pixel(1, x + 9, y + 1);
 
-	put_pixel(1, x + 2, y + 2);
-	put_pixel(1, x + 5, y + 2);
-	put_pixel(1, x + 8, y + 2);
+    put_pixel(1, x + 2, y + 2);
+    put_pixel(1, x + 5, y + 2);
+    put_pixel(1, x + 8, y + 2);
 
-	put_pixel(1, x + 3, y + 3);
-	put_pixel(1, x + 5, y + 3);
-	put_pixel(1, x + 7, y + 3);
+    put_pixel(1, x + 3, y + 3);
+    put_pixel(1, x + 5, y + 3);
+    put_pixel(1, x + 7, y + 3);
 
-	put_pixel(1, x + 4, y + 4);
-	put_pixel(1, x + 5, y + 4);
-	put_pixel(1, x + 6, y + 4);
+    put_pixel(1, x + 4, y + 4);
+    put_pixel(1, x + 5, y + 4);
+    put_pixel(1, x + 6, y + 4);
 
-	put_pixel(1, x + 5, y + 5);
-	put_pixel(1, x + 5, y + 6);
+    put_pixel(1, x + 5, y + 5);
+    put_pixel(1, x + 5, y + 6);
 
     }
 }
