@@ -53,7 +53,7 @@ public:
 
     void decode(const uint8_t *buf, int size);
 
-    int sendMessage(const uint8_t *buf, uint32_t len, Serial &s);
+    void sendMessage(const uint8_t *buf, uint32_t len, Serial &s);
 
     int recvMessage(Serial &s);
 
