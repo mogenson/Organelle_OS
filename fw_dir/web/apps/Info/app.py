@@ -3,17 +3,16 @@ import time
 import glob
 import json
 import cherrypy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import time
 import socket
 from cherrypy.lib import static
-import imp
+from importlib.machinery import SourceFileLoader
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+info = SourceFileLoader('info', current_dir + '/info.py').load_module()
 
-info = imp.load_source('info', current_dir + '/info.py')
-
-config = { '/': 
+config = { '/':
         {
         }
 }
@@ -31,7 +30,7 @@ class Root(object):
     def index(self):
         info.get_info()
         stuff = ''
-        for item in info.items.values() :
+        for item in list(info.items.values()) :
             stuff += '<b>' + item[0] +': </b>' + item[1] + '</br></br>'
         return """
 <html>
@@ -42,7 +41,7 @@ class Root(object):
 </head>
 <body style="margin:20px;">
 
-<span style="float:right;font-size: 1.5em; padding-top: .3em;"> 
+<span style="float:right;font-size: 1.5em; padding-top: .3em;">
     <a id="home-but" href="/"><span class="glyphicon glyphicon-home"></span></a>
 </span>
 

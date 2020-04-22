@@ -1,11 +1,10 @@
 import os
-import imp
 import sys
 import time
 import threading
 import subprocess
 import socket
-
+from importlib.machinery import SourceFileLoader
 
 # mother stashes fw_dir in /tmp
 with open('/tmp/fw_dir') as f:
@@ -16,8 +15,8 @@ with open('/tmp/user_dir') as f:
         user_dir = f.readline().rstrip('\n')
 
 # imports
-print fw_dir
-wifi = imp.load_source('wifi_control', fw_dir + '/scripts/wifi_control.py')
+print(fw_dir)
+wifi = SourceFileLoader('wifi_control', fw_dir + '/scripts/wifi_control.py').load_module()
 
 items = {
     "ssid" : ["WiFi Network", "not connected"],
@@ -40,7 +39,7 @@ def check_wifi():
 def run_cmd(cmd) :
     ret = 'None'
     try:
-        ret = subprocess.check_output(['bash', '-c', cmd], close_fds=True)
+        ret = str(subprocess.check_output(['bash', '-c', cmd], close_fds=True), 'utf-8')
     except: pass
     return ret
 

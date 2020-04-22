@@ -9,4 +9,4 @@ echo using USER_DIR: $USER_DIR
 
 # start webserver
 cd $FW_DIR/web/server
-python2 server.py 
+python3 server.py

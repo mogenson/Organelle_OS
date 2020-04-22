@@ -15,7 +15,7 @@ def edit_ap(name, pw):
     if os.path.exists(ap_file):
         f = open(user_dir + "/ap.txt", "r")
     else :
-        print "wifi file not found, creating"
+        print("wifi file not found, creating")
         f = open(user_dir + "/ap.txt", "w")
         f.close()
 
@@ -36,11 +36,11 @@ def delete_network(name):
     f = open(user_dir + "/wifi.txt", "r")
     lines = f.readlines()
     f.close()
-    print name
+    print(name)
     for i in range(len(lines)):
-        print lines[i]
+        print(lines[i])
         if lines[i].rstrip() == name :
-            print "MATHC"
+            print("MATHC")
             del lines[i:i+2]
             break
 
@@ -50,7 +50,7 @@ def delete_network(name):
     return '{"ok":"ok"}'
 
 def get_networks():
-    
+
     # this might have changed so check it again
     with open('/tmp/user_dir') as f:
         user_dir = f.readline().rstrip('\n')
@@ -61,7 +61,7 @@ def get_networks():
     if os.path.exists(wifi_file):
         f = open(user_dir + "/wifi.txt", "r")
     else :
-        print "wifi file not found, creating"
+        print("wifi file not found, creating")
         f = open(user_dir + "/wifi.txt", "w")
         #f.write("\n")
         #f.write("\n")
@@ -69,16 +69,16 @@ def get_networks():
         f = open(user_dir + "/wifi.txt", "r")
     try :
         networks = f.readlines()
-        networks = [x.strip() for x in networks] 
+        networks = [x.strip() for x in networks]
         ssids = networks[0::2]
         pws = networks[1::2]
         for i in range(len(ssids)) :
             if (ssids[i] != '') :
                 network_names += [{'name': ssids[i]}]
                 ssid = ssids[i]
-    except : 
-        print "bad wifi file" 
+    except :
+        print("bad wifi file")
 
-    return json.dumps(network_names, indent=4, encoding='utf-8')
+    return json.dumps(network_names, indent=4)
 
 

@@ -1,9 +1,9 @@
-import imp
 import time
 import os
+from importlib.machinery import SourceFileLoader
 
 fw_dir = os.getenv("FW_DIR")
-wifi = imp.load_source('wifi_control', fw_dir + '/scripts/wifi_control.py')
+wifi = SourceFileLoader('wifi_control', fw_dir + '/scripts/wifi_control.py').load_module()
 
 
 while True:

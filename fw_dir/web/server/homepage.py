@@ -3,13 +3,13 @@ import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-config = { '/': 
+config = { '/':
         {
         },
-		'/favicon.ico': {
-			'tools.staticfile.on': True,
-			'tools.staticfile.filename': current_dir + '/static/fav.png'
-		},
+        '/favicon.ico': {
+            'tools.staticfile.on': True,
+            'tools.staticfile.filename': current_dir + '/static/fav.png'
+        },
         '/static/bootstrap.min.css': {
             'tools.staticfile.on': True,
             'tools.staticfile.filename': current_dir + '/static/bootstrap.min.css'
@@ -26,7 +26,7 @@ class Root(object):
     links = ''
     def __init__(self, apps):
         self.apps = apps
-        for app in apps : 
+        for app in apps :
             self.links += '<a href="'+app.base+'" class="btn btn-default" role="button" style="margin:6px 0;">'+app.name+'</a></br>'
 
     @cherrypy.expose
@@ -40,7 +40,7 @@ class Root(object):
 </head>
 <body style="margin:20px;">
 
-<span style="float:right;font-size: 1.5em; padding-top: .3em;"> 
+<span style="float:right;font-size: 1.5em; padding-top: .3em;">
 </span>
 
 

@@ -1,23 +1,23 @@
 import os
-import imp
 import sys
 import time
 import threading
 import subprocess
 import socket
+from importlib.machinery import SourceFileLoader
 
-print "Starting INFO script"
+print("Starting INFO script")
 
 # usb or sd card
 user_dir = os.getenv("USER_DIR", "/usbdrive")
 patch_dir = os.getenv("PATCH_DIR", "/usbdrive/Patches")
 fw_dir = os.getenv("FW_DIR")
 
-print "loading og module"
+print("loading og module")
 # imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
-og = imp.load_source('og', current_dir + '/og.py')
-wifi = imp.load_source('wifi_control', current_dir + '/wifi_control.py')
+og = SourceFileLoader('og', current_dir + '/og.py').load_module()
+wifi = SourceFileLoader('wifi_control', current_dir + '/wifi_control.py').load_module()
 
 ssid = "not connected"
 ip_address = "not connected"
@@ -35,7 +35,7 @@ def check_vnc():
     try:
         subprocess.check_output(['bash', '-c', cmd], close_fds=True)
         ret = True
-    except: 
+    except:
         ret = False
     return ret
 
@@ -43,7 +43,7 @@ def check_vnc():
 def run_cmd(cmd) :
     ret = 'None'
     try:
-        ret = subprocess.check_output(['bash', '-c', cmd], close_fds=True)
+        ret = str(subprocess.check_output(['bash', '-c', cmd], close_fds=True), 'utf-8')
     except: pass
     return ret
 
@@ -63,7 +63,7 @@ def check_status():
 
 info = og.InfoList()
 
-print "start app"
+print("start app")
 # start it up
 og.start_app()
 
@@ -86,8 +86,8 @@ check_wifi()
 #info.items = [usbdrive, midi_dev, version, "Patch Folder:", patch_dir, "User Root:", user_dir, ip_address, "Host Name:",host_name]
 info.items = [
 cpu,
-usbdrive, 
-"IP: " + ip_address, 
+usbdrive,
+"IP: " + ip_address,
 "WiFi Network:",
 "  " + ssid,
 "Host Name:",
@@ -96,11 +96,11 @@ host_name,
 vnc_server,
 "Patch: ",
 patch,
-"Patch Folder:", 
-patch_dir, 
-"User Root:", 
-user_dir, 
-version, 
+"Patch Folder:",
+patch_dir,
+"User Root:",
+user_dir,
+version,
 ]
 
 info.header='INFO press to exit.'

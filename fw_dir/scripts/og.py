@@ -1,5 +1,5 @@
 import liblo
-import time 
+import time
 import sys
 import os
 
@@ -19,7 +19,7 @@ def loading_screen ():
     os.system('oscsend localhost 4001 /enableauxsub i 1')
     os.system('oscsend localhost 4001 /oled/setscreen i 1')
 
-# OSC and UI primitives 
+# OSC and UI primitives
 def start_app ():
     loading_screen()
     init_osc()
@@ -53,9 +53,9 @@ def flip() :
 
 def init_osc() :
     global osc_server, osc_target
-    print "config osc target"
+    print("config osc target")
     osc_target = liblo.Address(4001)
-    print "config osc osc_server"
+    print("config osc osc_server")
     # make sure the port is available... ahh ok
     os.system("fuser -k 4002/udp")
     try:
@@ -63,10 +63,10 @@ def init_osc() :
         osc_server.add_method("/encoder/turn", 'i', enc_turn)
         osc_server.add_method("/encoder/button", 'i', enc_press)
 
-    except liblo.ServerError, err:
-        print str(err)
+    except liblo.ServerError as err:
+        print(str(err))
         sys.exit()
-    print "done config osc_server"
+    print("done config osc_server")
 
 def enc_turn(path, args) :
     global enc_turn_flag, enc_turn
@@ -131,16 +131,16 @@ class Menu :
         println(0, self.header)
 
         # menu entries for the rest
-        sz = min(len(self.items),4)
+        sz = min(len(self.items), 4)
         for i in range(0, sz) :
             println(i+1, self.items[i + self.menu_offset][0])
         invert_line(self.cursor_offset + 1)
-        
+
         flip()
-   
+
     def back(self):
         self.back_flag = True
- 
+
     def enter(self) :
         self.perform()
 
@@ -189,10 +189,10 @@ class InfoList :
         println(0, self.header)
 
         # menu entries for the rest
-        sz = min(len(self.items),4)
+        sz = min(len(self.items), 4)
         for i in range(0, sz) :
             println(i+1, self.items[i + self.menu_offset])
-        
+
         flip()
 
     def enc_up(self) :

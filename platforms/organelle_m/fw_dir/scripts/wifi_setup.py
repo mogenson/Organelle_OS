@@ -1,9 +1,9 @@
 import os
-import imp
 import sys
 import time
 import threading
 import subprocess
+from importlib.machinery import SourceFileLoader
 
 # usb or sd card
 user_dir = os.getenv("USER_DIR", "/usbdrive")
@@ -11,8 +11,8 @@ fw_dir = os.getenv("FW_DIR")
 
 # imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
-og = imp.load_source('og', current_dir + '/og.py')
-wifi = imp.load_source('wifi_control', current_dir + '/wifi_control.py')
+og = SourceFileLoader('og', current_dir + '/og.py').load_module()
+wifi = SourceFileLoader('wifi_control', current_dir + '/wifi_control.py').load_module()
 
 wifi.log_file = user_dir + "/wifi_log.txt"
 
@@ -44,7 +44,7 @@ class WifiNet :
         og.redraw_flag = True
 
 def disconnect():
-    print "wifi disconnect all"
+    print("wifi disconnect all")
     wifi.disconnect_all()
     update_menu()
     og.redraw_flag = True
@@ -68,62 +68,62 @@ def check_vnc():
     try:
         subprocess.check_output(['bash', '-c', cmd], close_fds=True)
         ret = True
-    except: 
+    except:
         ret = False
     return ret
 
 def start_web():
-    print "start web"
+    print("start web")
     wifi.start_web_server()
     update_menu()
     og.redraw_flag = True
 
 def stop_web():
-    print "stop web"
+    print("stop web")
     wifi.stop_web_server()
     update_menu()
     og.redraw_flag = True
 
 def start_ap():
-    print "start ap"
+    print("start ap")
     wifi.start_ap_server()
     update_menu()
     og.redraw_flag = True
 
 def stop_ap():
-    print "stop ap"
+    print("stop ap")
     wifi.stop_ap_server()
     update_menu()
     og.redraw_flag = True
 
 # update menu based on connection status
 def update_menu():
-    dots = ['.','..','...','....']
+    dots = ['.', '..', '...', '....']
     menu_lock.acquire()
     try :
         # update wifi network labels
-        if (wifi.state == wifi.CONNECTING) : 
+        if (wifi.state == wifi.CONNECTING) :
             menu.header = 'Connecting'+dots[wifi.connecting_timer % 4]
             update_net_status_label('.')
-        elif (wifi.state == wifi.CONNECTED) : 
+        elif (wifi.state == wifi.CONNECTED) :
             menu.header = 'Connected ' + wifi.current_net
             update_net_status_label('*')
-        elif (wifi.state == wifi.DISCONNECTING) : 
+        elif (wifi.state == wifi.DISCONNECTING) :
             menu.header = 'Disconnecting..'
             update_net_status_label('-')
-        elif (wifi.state == wifi.CONNECTION_ERROR) : 
+        elif (wifi.state == wifi.CONNECTION_ERROR) :
             menu.header = 'Problem Connecting'
             update_net_status_label('-')
-        else : 
+        else :
             menu.header = 'Not Connected'
             update_net_status_label('-')
-        
+
         # update webserver menu entry
         if (wifi.web_server_state == wifi.WEB_SERVER_RUNNING) :
             update_web_server_menu_entry(True)
         else :
             update_web_server_menu_entry(False)
-    
+
         # update webserver menu entry
         if (wifi.ap_state == wifi.AP_RUNNING) :
             update_ap_menu_entry(True)
@@ -208,7 +208,7 @@ wifi_file = user_dir + "/wifi.txt"
 if os.path.exists(wifi_file):
     f = open(user_dir + "/wifi.txt", "r")
 else :
-    print "wifi file not found, creating"
+    print("wifi file not found, creating")
     f = open(user_dir + "/wifi.txt", "w")
     f.write("Network Name\n")
     f.write("password\n")
@@ -217,7 +217,7 @@ else :
 
 try :
     networks = f.readlines()
-    networks = [x.strip() for x in networks] 
+    networks = [x.strip() for x in networks]
     ssids = networks[0::2]
     pws = networks[1::2]
     for i in range(len(ssids)) :
@@ -228,9 +228,9 @@ try :
             net.ssid = ssid
             net.pw = pw
             menu.items.append([' - ' + ssid, net.connect, {'type':'net', 'ssid':ssid}]) # stash some extra info with these net entries
-except : 
+except :
     error_wifi_file()
-    print "bad wifi file" 
+    print("bad wifi file")
 
 menu.items.append(['Start Web Server', non, {'type':'web_server_control'}])
 menu.items.append(['Start AP', non, {'type':'ap_control'}])

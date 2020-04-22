@@ -3,27 +3,25 @@ import time
 import glob
 import json
 import cherrypy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import time
 import socket
 from cherrypy.lib import static
-import imp
-
+from importlib.machinery import SourceFileLoader
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
-file_operations = imp.load_source('file_operations', current_dir + '/file_operations.py')
+file_operations = SourceFileLoader('file_operations', current_dir + '/file_operations.py').load_module()
 
 def get_immediate_subdirectories(dir) :
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
 
-config = { '/': 
-        {
- 		'tools.staticdir.on': True,
-		'tools.staticdir.dir': current_dir + '/static/',
-		'tools.staticdir.index': 'index.html',
-        }
+config = { '/':
+    {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': current_dir + '/static/',
+        'tools.staticdir.index': 'index.html',
+    }
 }
 base = '/files'
 name = 'Patch Manager'
@@ -32,7 +30,7 @@ class Root():
 
     def tester(self, name):
         return "TESTdf"
-        print "cool"
+        print("cool")
     tester.exposed = True
 
     def flash(self):
@@ -68,7 +66,7 @@ class Root():
         folder = dst
         filename = upload.filename
         size = 0
-        filepath = file_operations.BASE_DIR + folder + '/' + filename 
+        filepath = file_operations.BASE_DIR + folder + '/' + filename
         filepath = file_operations.check_and_inc_name(filepath)
         with open(filepath, 'wb') as newfile:
             while True:
@@ -77,15 +75,15 @@ class Root():
                     break
                 size += len(data)
                 newfile.write(data)
-        print "saved file, size: " + str(size)
+        print("saved file, size: " + str(size))
         p, ext = os.path.splitext(filepath)
         cherrypy.response.headers['Content-Type'] = "application/json"
         return '{"files":[{"name":"x","size":'+str(size)+',"url":"na","thumbnailUrl":"na","deleteUrl":"na","deleteType":"DELETE"}]}'
-        
+
     upload.exposed = True
-  
+
     def fmdata(self, **data):
-        
+
         ret = ''
         if 'operation' in data :
             cherrypy.response.headers['Content-Type'] = "application/json"
@@ -107,7 +105,7 @@ class Root():
                 return file_operations.download(data['path'])
             if data['operation'] == 'zip_node' :
                 return file_operations.zip(data['path'])
-              
+
         else :
             cherrypy.response.headers['Content-Type'] = "application/json"
             return "no operation specified"

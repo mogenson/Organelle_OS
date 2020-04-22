@@ -14,16 +14,16 @@ CONNECTION_ERROR = 4
 state = NOT_CONNECTED
 connecting_timer = 0
 
-# AP 
+# AP
 AP_STOPPED = 0
 AP_RUNNING = 1
-ap_state = AP_STOPPED 
+ap_state = AP_STOPPED
 
 
 # webserver
 WEB_SERVER_STOPPED = 0
 WEB_SERVER_RUNNING = 1
-web_server_state = WEB_SERVER_STOPPED 
+web_server_state = WEB_SERVER_STOPPED
 
 current_net = ''
 ip_address = ''
@@ -32,7 +32,7 @@ ip_address = ''
 def run_cmd(cmd) :
     ret = False
     try:
-        ret = subprocess.check_output(['bash', '-c', cmd], close_fds=True)
+        ret = str(subprocess.check_output(['bash', '-c', cmd], close_fds=True), 'utf-8')
     except: pass
     return ret
 
@@ -70,7 +70,7 @@ def stop_ap_server():
 # true or false connected with ip address
 # updates ip and current network when connected
 def wifi_connected():
-    global ap_state,ip_address, current_net
+    global ap_state, ip_address, current_net
     ret = False
     if ap_state == AP_RUNNING :
         ip_address = "192.168.12.1"
@@ -97,9 +97,9 @@ def update_network_info(info):
 # get initial connection state and ip and ssid
 def initialize_state():
     global state, web_server_state, ap_state
-    
+
     # wifi state on startup
-    if wifi_connected() : 
+    if wifi_connected() :
         state = CONNECTED
     else : state = NOT_CONNECTED
 
@@ -118,8 +118,8 @@ def update_state() :
     # wifi states
     if (state == NOT_CONNECTED):
         if wifi_connected() : state = CONNECTED
-    elif (state == CONNECTING) : 
-        if wifi_connected() : 
+    elif (state == CONNECTING) :
+        if wifi_connected() :
             state = CONNECTED
         else :
             connecting_timer += 1
@@ -152,17 +152,17 @@ def connect(ssid, pw) :
 
     # disconnect everything
     disconnect_all()
- 
+
     # restart log
     run_cmd("echo WIFI LOG > " + log_file)
-   
+
     # update state
     state = CONNECTING
     connecting_timer = 0
     current_net = ssid
 
     run_cmd("ip link set wlan0 up >> "+log_file+" 2>&1")
-    run_cmd("wpa_supplicant -B -D nl80211,wext -i wlan0 -c <(cat <(echo ctrl_interface=/var/run/wpa_supplicant) <(wpa_passphrase \""+ssid+"\" \""+pw+"\")) >> "+log_file+" 2>&1") 
+    run_cmd("wpa_supplicant -B -D nl80211,wext -i wlan0 -c <(cat <(echo ctrl_interface=/var/run/wpa_supplicant) <(wpa_passphrase \""+ssid+"\" \""+pw+"\")) >> "+log_file+" 2>&1")
     run_cmd("dhcpcd -b wlan0 >> "+log_file+" 2>&1")
 
 

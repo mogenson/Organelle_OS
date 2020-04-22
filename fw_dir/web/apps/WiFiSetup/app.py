@@ -3,22 +3,22 @@ import time
 import glob
 import json
 import cherrypy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import time
 import socket
 from cherrypy.lib import static
-import imp
+from importlib.machinery import SourceFileLoader
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-file_operations = imp.load_source('file_operations', current_dir + '/file_operations.py')
+file_operations = SourceFileLoader('file_operations', current_dir + '/file_operations.py').load_module()
 
-config = { '/': 
-        {
- 		'tools.staticdir.on': True,
-		'tools.staticdir.dir': current_dir + '/static/',
-		'tools.staticdir.index': 'index.html',
-        }
+config = { '/':
+    {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': current_dir + '/static/',
+        'tools.staticdir.index': 'index.html',
+    }
 }
 base = '/wifi'
 name = 'WiFi Setup'
@@ -27,14 +27,14 @@ class Root():
 
     def tester(self, name):
         return "TESTdf"
-        print "cool"
+        print("cool")
     tester.exposed = True
 
     def flash(self):
         os.system("oscsend localhost 4001 /led/flash i 4")
         return "done"
     flash.exposed = True
-         
+
     def fmdata(self, **data):
         ret = ''
         if 'operation' in data :

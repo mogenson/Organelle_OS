@@ -1,9 +1,9 @@
 import os
 import subprocess
-import imp
 import sys
 import time
 import threading
+from importlib.machinery import SourceFileLoader
 
 #vars
 exprMin=0
@@ -16,7 +16,7 @@ user_dir = os.getenv("USER_DIR", "/usbdrive")
 
 # imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
-og = imp.load_source('og', current_dir + '/og.py')
+og = SourceFileLoader('og', current_dir + '/og.py').load_module()
 
 # UI elements
 menu = og.Menu()
@@ -29,8 +29,8 @@ menu_lock = threading.Lock()
 def run_cmd(cmd) :
     ret = False
     try:
-        ret = subprocess.check_output(['bash', '-c', cmd], close_fds=True)
-    except: 
+        ret = str(subprocess.check_output(['bash', '-c', cmd], close_fds=True), 'utf-8')
+    except:
         pass
     return ret
 
@@ -58,7 +58,7 @@ def check_status():
 menu.items = []
 menu.header='Pedal Setup'
 
-switchtypes=["Patch","Favourites"]
+switchtypes=["Patch", "Favourites"]
 
 def switchType(i) :
     return switchtypes[i]
@@ -80,56 +80,56 @@ def getIntVal(key, dval) :
         return int(s)
     return dval
 
-exprMin=getIntVal('exprMin',0)
-exprMax=getIntVal('exprMax',1023)
-switchMode=getIntVal('switchMode',0)
+exprMin=getIntVal('exprMin', 0)
+exprMax=getIntVal('exprMax', 1023)
+switchMode=getIntVal('switchMode', 0)
 
 def ExprMinSelect():
         global exprMin
         og.clear_screen()
-        og.println(1,"Expr Min")
-        og.println(2,str(exprMin))
+        og.println(1, "Expr Min")
+        og.println(2, str(exprMin))
         og.flip()
         og.enc_but_flag = False
         while True :
             og.enc_input()
-            if (og.enc_turn_flag): 
-                if(og.enc_turn and exprMin < 1023): 
+            if (og.enc_turn_flag):
+                if(og.enc_turn and exprMin < 1023):
                     exprMin += 1
                 elif(og.enc_turn==0 and exprMin > 0):
                     exprMin -= 1
                 #exprMin=max(min(exprMin, 1023, 0)
                 og.clear_screen()
-                og.println(1,"Expr Min")
-                og.println(2,str(exprMin))
+                og.println(1, "Expr Min")
+                og.println(2, str(exprMin))
                 og.flip()
             elif (og.enc_but_flag and og.enc_but==1):
-                print exprMin
+                print(exprMin)
                 menu.items[menu.selection][0] = 'Expr Min : ' + str(exprMin)
                 break
 
 def ExprMaxSelect():
         global exprMax
         og.clear_screen()
-        og.println(1,"Expr Max")
-        og.println(2,str(exprMax))
+        og.println(1, "Expr Max")
+        og.println(2, str(exprMax))
         og.flip()
         og.enc_but_flag = False
         while True :
             og.enc_input()
-            if (og.enc_turn_flag): 
-                if(og.enc_turn and exprMax < 1023): 
+            if (og.enc_turn_flag):
+                if(og.enc_turn and exprMax < 1023):
                     exprMax += 1
                 elif(og.enc_turn==0 and exprMax > 0):
                     exprMax -= 1
                 #exprMax=max(min(exprMax,1023), 0)
 
                 og.clear_screen()
-                og.println(1,"Expr Max")
-                og.println(2,str(exprMax))
+                og.println(1, "Expr Max")
+                og.println(2, str(exprMax))
                 og.flip()
             elif (og.enc_but_flag and og.enc_but==1):
-                print exprMax
+                print(exprMax)
                 menu.items[menu.selection][0] = 'Expr Max : ' + str(exprMax)
                 break
 
@@ -137,24 +137,24 @@ def ExprMaxSelect():
 def SwitchModeSelect():
         global switchMode
         og.clear_screen()
-        og.println(1,"Switch Mode")
-        og.println(2,switchType(switchMode))
+        og.println(1, "Switch Mode")
+        og.println(2, switchType(switchMode))
         og.flip()
         og.enc_but_flag = False
         while True :
             og.enc_input()
-            if (og.enc_turn_flag): 
-                if(og.enc_turn and switchMode < (len(switchtypes)-1)): 
+            if (og.enc_turn_flag):
+                if(og.enc_turn and switchMode < (len(switchtypes)-1)):
                     switchMode += 1
                 elif(og.enc_turn==0 and switchMode > 0):
                     switchMode -= 1
 
                 og.clear_screen()
-                og.println(1,"Switch Mode")
-                og.println(2,switchType(switchMode))
+                og.println(1, "Switch Mode")
+                og.println(2, switchType(switchMode))
                 og.flip()
             elif (og.enc_but_flag and og.enc_but==1):
-                print switchMode
+                print(switchMode)
                 menu.items[menu.selection][0] = 'Switch : ' + switchType(switchMode)
                 break
 
@@ -177,18 +177,18 @@ def save():
     os.system("chmod +x "+user_dir+"/pedal_cfg.sh")
     os.system(user_dir+"/pedal_cfg.sh")
     og.clear_screen()
-    og.println(1,"Pedal configuration")
-    og.println(2,"SAVED")
+    og.println(1, "Pedal configuration")
+    og.println(2, "SAVED")
     og.flip()
     os.system('oscsend localhost 4001 /pedalConfig i 1')
-    time.sleep(0.5)    
+    time.sleep(0.5)
     pass
 
 
 
-menu.items.append(['Expr Min : ' + str(exprMin) , ExprMinSelect])
-menu.items.append(['Expr Max : ' + str(exprMax) , ExprMaxSelect])
-menu.items.append(['Switch : ' + switchType(switchMode) , SwitchModeSelect])
+menu.items.append(['Expr Min : ' + str(exprMin), ExprMinSelect])
+menu.items.append(['Expr Max : ' + str(exprMax), ExprMaxSelect])
+menu.items.append(['Switch : ' + switchType(switchMode), SwitchModeSelect])
 menu.items.append(['Save', save])
 menu.items.append(['< Home', quit])
 menu.selection = 0
