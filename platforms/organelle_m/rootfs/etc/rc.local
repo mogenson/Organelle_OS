@@ -28,9 +28,6 @@ export FW_DIR=/home/music/fw_dir
 # start ttymidi
 $FW_DIR/scripts/ttymidi -s /dev/ttyAMA0 -b 38400 &
 
-# monitor power switch
-python3 $FW_DIR/scripts/power_switch_monitor.py &
-
 # monitor wifi connection
 python3 $FW_DIR/scripts/wifi_monitor.py &
 
