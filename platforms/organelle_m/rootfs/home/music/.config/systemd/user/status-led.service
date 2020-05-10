@@ -1,0 +1,9 @@
+[Unit]
+Description=Disable status LED
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo none > /sys/class/leds/led0/trigger"
+
+[Install]
+WantedBy=default.target
