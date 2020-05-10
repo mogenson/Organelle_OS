@@ -28,7 +28,4 @@ export FW_DIR=/home/music/fw_dir
 # start ttymidi
 $FW_DIR/scripts/ttymidi -s /dev/ttyAMA0 -b 38400 &
 
-# redirect 80 to 8080 for the web server
-iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-ports 8080
-
 exit 0

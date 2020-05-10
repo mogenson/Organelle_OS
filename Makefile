@@ -69,8 +69,10 @@ organelle_m_deploy : organelle_m
 	cp -fr --preserve=mode,ownership tmp/rootfs/* /
 	rm -fr tmp
 	sync
+	@echo "enable systemd units"
+	systemctl enable nftables.service
 
-# Generate with g++ -MM *.c* OSC/*.* 
+# Generate with g++ -MM *.c* OSC/*.*
 AppData.o: AppData.cpp AppData.h OledScreen.h
 MainMenu.o: MainMenu.cpp MainMenu.h AppData.h OledScreen.h
 OledScreen.o: OledScreen.cpp OledScreen.h fonts.h simple_svg_1.0.0.hpp
