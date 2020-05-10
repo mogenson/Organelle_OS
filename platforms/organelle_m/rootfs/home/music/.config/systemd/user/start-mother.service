@@ -1,0 +1,8 @@
+[Unit]
+Description=Organelle M Mother
+
+[Service]
+ExecStart=/home/music/fw_dir/scripts/start-mother.sh
+
+[Install]
+WantedBy=default.target

@@ -73,6 +73,7 @@ organelle_m_deploy : organelle_m
 	systemctl enable nftables.service
 	systemctl --user enable ttymidi.service
 	systemctl --user enable status-led.service
+	systemctl --user enable start-mother.service
 
 # Generate with g++ -MM *.c* OSC/*.*
 AppData.o: AppData.cpp AppData.h OledScreen.h
