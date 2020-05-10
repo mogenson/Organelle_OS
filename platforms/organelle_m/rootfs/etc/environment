@@ -1,0 +1,3 @@
+FW_DIR=/home/music/fw_dir
+SCRIPTS_DIR=/home/music/fw_dir/scripts
+PATCH_DIR=/sdcard/Patches
