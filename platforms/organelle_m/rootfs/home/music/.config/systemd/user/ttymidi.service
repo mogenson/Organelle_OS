@@ -1,0 +1,8 @@
+[Unit]
+Description=TTY MIDI
+
+[Service]
+ExecStart=/home/music/fw_dir/scripts/ttymidi -s /dev/ttyAMA0 -b 38400
+
+[Install]
+WantedBy=default.target

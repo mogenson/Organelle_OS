@@ -71,6 +71,7 @@ organelle_m_deploy : organelle_m
 	sync
 	@echo "enable systemd units"
 	systemctl enable nftables.service
+	systemctl --user enable ttymidi.service
 
 # Generate with g++ -MM *.c* OSC/*.*
 AppData.o: AppData.cpp AppData.h OledScreen.h

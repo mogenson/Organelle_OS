@@ -22,7 +22,4 @@ echo -n performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 # disable status led after bootup
 echo none > /sys/class/leds/led0/trigger
 
-# start ttymidi
-$FW_DIR/scripts/ttymidi -s /dev/ttyAMA0 -b 38400 &
-
 exit 0
